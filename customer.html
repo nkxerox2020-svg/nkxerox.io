@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Customer Portal | NK XEROX</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#f8fafc;color:#020617}
+:root{--p:#2563eb;--a:#22c55e;--y:#facc15}
+header{background:linear-gradient(135deg,#020617,#2563eb);color:#fff;padding:30px;text-align:center}
+.container{max-width:1300px;margin:40px auto;padding:0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.card h3{color:#2563eb;margin-bottom:10px}
+.btn{display:inline-block;padding:10px 22px;border-radius:20px;background:var(--a);color:#052e16;font-weight:600;cursor:pointer;margin-top:10px}
+.btn.yellow{background:var(--y)}
+input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin-top:10px}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{padding:10px;border-bottom:1px solid #e5e7eb;font-size:14px;text-align:left}
+th{background:#f1f5f9}
+footer{text-align:center;padding:30px;color:#64748b}
+</style>
+</head>
+<body>
+
+<header>
+<h1>NK XEROX – CUSTOMER DASHBOARD</h1>
+<p>Your Orders • Uploads • Credits • Reviews</p>
+</header>
+
+<div class="container">
+<div class="grid">
+
+<div class="card">
+<h3>Credit Tokens</h3>
+<h2 id="credits">0</h2>
+<p>Use credits for future prints</p>
+<div class="btn yellow" onclick="addCredits()">Add Credits</div>
+</div>
+
+<div class="card">
+<h3>Upload New Document</h3>
+<input type="file">
+<select><option>Colour</option><option>B/W</option></select>
+<select><option>A4</option><option>A3</option></select>
+<textarea placeholder="Instructions"></textarea>
+<div class="btn">Submit Order</div>
+</div>
+
+<div class="card">
+<h3>Order History</h3>
+<table>
+<thead><tr><th>#</th><th>Type</th><th>Size</th><th>Status</th><th>Date</th></tr></thead>
+<tbody id="history"></tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Previous Uploads</h3>
+<p>View submitted documents</p>
+<div class="btn">View Uploads</div>
+</div>
+
+<div class="card">
+<h3>Write a Review</h3>
+<textarea placeholder="Share your experience"></textarea>
+<div class="btn">Submit Review</div>
+</div>
+
+<div class="card">
+<h3>Offers & Announcements</h3>
+<ul style="line-height:1.8">
+<li>Festival discounts</li>
+<li>Bulk print offers</li>
+<li>Loyalty rewards</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Profile & Support</h3>
+<div class="btn">Update Profile</div>
+<div class="btn">Contact NK Xerox</div>
+</div>
+
+</div>
+</div>
+
+<footer>© NK XEROX – Customer Panel</footer>
+
+<script>
+function loadHistory(){
+const orders=JSON.parse(localStorage.getItem('orders')||'[]')
+const h=document.getElementById('history')
+h.innerHTML=''
+orders.forEach((o,i)=>{
+h.innerHTML+=`<tr><td>${i+1}</td><td>${o.type}</td><td>${o.size}</td><td>${o.status||'pending'}</td><td>${o.time}</td></tr>`})
+}
+function addCredits(){let c=Number(localStorage.getItem('credits')||0)+10;localStorage.setItem('credits',c);document.getElementById('credits').innerText=c}
+document.getElementById('credits').innerText=localStorage.getItem('credits')||0
+loadHistory();setInterval(loadHistory,3000)
+</script>
+
+</body>
+</html>
